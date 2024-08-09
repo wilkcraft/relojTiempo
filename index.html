@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Reloj, Temporizador, Cronómetro y Clima</title>
+    <title>Reloj y Clima</title>
     <style>
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -151,7 +151,7 @@
 <body>
 
 <div class="container">
-    <h1>Reloj, Temporizador, Cronómetro y Clima</h1>
+    <h1>Reloj y Clima</h1>
 
     <div class="section reloj">
         <h2>Hora Actual</h2>
@@ -177,7 +177,7 @@
 
     <div class="section clima">
         <h2>Clima Actual</h2>
-        <button id="obtener-clima">Obtener Clima Actual</button>
+        <a href="https://www.aemet.es/es/portada" target="_blank"><button id="obtener-clima">Ir a AEMET</button></a>
         <div class="clima-info" id="clima-info"></div>
     </div>
 </div>
@@ -261,38 +261,6 @@
         document.getElementById('cronometro-cuenta').innerText = "00:00:00";
     });
 
-    // Obtener clima según la ubicación actual
-    document.getElementById('obtener-clima').addEventListener('click', function() {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(function(position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
-
-                fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=TU_API_KEY&units=metric&lang=es`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const climaInfo = document.getElementById('clima-info');
-                        if (data.cod === 200) {
-                            climaInfo.innerHTML = `
-                                <p>Ciudad: ${data.name}</p>
-                                <p>Temperatura: ${data.main.temp}°C</p>
-                                <p>Clima: ${data.weather[0].description}</p>
-                                <p>Humedad: ${data.main.humidity}%</p>
-                                <p>Viento: ${data.wind.speed} m/s</p>
-                            `;
-                        } else {
-                            climaInfo.innerHTML = `<p>No se pudo obtener el clima</p>`;
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error al obtener el clima:", error);
-                        document.getElementById('clima-info').innerHTML = `<p>Error al obtener el clima</p>`;
-                    });
-            });
-        } else {
-            document.getElementById('clima-info').innerHTML = `<p>La geolocalización no está disponible en este navegador</p>`;
-        }
-    });
 </script>
 
 </body>
